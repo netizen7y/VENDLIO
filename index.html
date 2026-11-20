@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07152e">
+<title>VENDLIO | Uganda's Marketplace</title>
+
+<style>
+:root{
+  --navy:#07152e;
+  --blue:#1769ff;
+  --white:#fff;
+  --light:#f3f6fb;
+  --dark:#17243a;
+  --muted:#718096;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--light);
+  color:var(--dark);
+}
+header{
+  background:var(--navy);
+  color:white;
+  padding:17px 5%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:15px;
+}
+.logo{font-size:27px;font-weight:900;letter-spacing:1px}
+.logo span{color:#39a0ff}
+.header-contact{
+  color:white;
+  text-decoration:none;
+  background:#1769ff;
+  padding:11px 17px;
+  border-radius:7px;
+  font-weight:bold;
+}
+.hero{
+  background:linear-gradient(110deg,#07152e,#123d78);
+  color:white;
+  padding:48px 6%;
+}
+.hero h1{font-size:36px;margin:0 0 12px}
+.hero p{color:#d7e5ff;line-height:1.6;max-width:650px}
+.search{
+  width:100%;
+  max-width:650px;
+  padding:15px;
+  border:0;
+  border-radius:7px;
+  margin-top:15px;
+  font-size:16px;
+}
+.section{padding:30px 5%}
+.section h2{color:var(--navy);margin-bottom:8px}
+.sub{color:var(--muted);margin-top:0}
+.filters{
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+  margin:20px 0;
+}
+.filters button{
+  border:1px solid #d8e0ed;
+  background:white;
+  padding:10px 15px;
+  border-radius:25px;
+  cursor:pointer;
+}
+.filters button.active{
+  background:var(--blue);
+  color:white;
+  border-color:var(--blue);
+}
+.category-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(145px,1fr));
+  gap:16px;
+}
+.category{
+  background:white;
+  border-radius:10px;
+  overflow:hidden;
+  cursor:pointer;
+  box-shadow:0 3px 12px #15294b12;
+  transition:.2s;
+}
+.category:hover{transform:translateY(-4px)}
+.category img{
+  width:100%;
+  height:115px;
+  object-fit:cover;
+  display:block;
+}
+.category div{
+  padding:12px 8px;
+  font-weight:bold;
+  text-align:center;
+  font-size:14px;
+}
+.product-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(210px,1fr));
+  gap:18px;
+  margin-top:20px;
+}
+.product{
+  background:white;
+  border-radius:10px;
+  overflow:hidden;
+  box-shadow:0 3px 12px #15294b12;
+}
+.product img{
+  width:100%;
+  height:185px;
+  object-fit:cover;
+  display:block;
+  background:#e5eaf1;
+}
+.product-info{padding:14px}
+.product h3{font-size:16px;margin:0 0 8px}
+.product p{font-size:13px;color:var(--muted);margin:5px 0}
+.tag{
+  display:inline-block;
+  background:#e8f1ff;
+  color:#1769ff;
+  font-size:11px;
+  padding:5px 8px;
+  border-radius:4px;
+  margin-bottom:8px;
+}
+.whatsapp{
+  display:block;
+  background:#16a34a;
+  color:white;
+  text-align:center;
+  padding:11px;
+  border-radius:6px;
+  text-decoration:none;
+  font-weight:bold;
+  margin-top:12px;
+}
+.location-box{
+  background:white;
+  padding:22px;
+  border-radius:10px;
+  line-height:1.8;
+}
+footer{
+  background:var(--navy);
+  color:white;
+  padding:30px 5%;
+  text-align:center;
+  line-height:1.8;
+}
+footer a{color:#80baff}
+.empty{padding:30px;text-align:center;color:var(--muted)}
+@media(max-width:600px){
+  .hero h1{font-size:28px}
+  .category-grid{grid-template-columns:repeat(2,1fr)}
+  .product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .product img{height:135px}
+  .product-info{padding:10px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">VEN<span>DLIO</span></div>
+  <a class="header-contact" href="https://wa.me/256705434720">
+    Contact VENDLIO
+  </a>
+</header>
+
+<section class="hero">
+  <h1>Everything You Need. All in One Marketplace.</h1>
+  <p>
+    Shop, sell, buy wholesale and discover businesses from across Uganda.
+    From everyday essentials to industrial supplies, VENDLIO brings buyers
+    and sellers together.
+  </p>
+  <input class="search" id="search"
+    placeholder="Search products, categories or sellers..."
+    oninput="showProducts()">
+</section>
+
+<section class="section">
+  <h2>Explore All Categories</h2>
+  <p class="sub">Discover products and services from across Uganda.</p>
+
+  <div class="category-grid" id="categories"></div>
+</section>
+
+<section class="section">
+  <h2>Discover Products</h2>
+  <p class="sub">Browse sample listings. Sellers will be able to add their own products when registration is connected.</p>
+
+  <div class="filters">
+    <button class="active" onclick="setCondition('All',this)">All</button>
+    <button onclick="setCondition('Brand new',this)">Brand new</button>
+    <button onclick="setCondition('Like new',this)">Like new</button>
+    <button onclick="setCondition('Gently used',this)">Gently used</button>
+    <button onclick="setCondition('Used',this)">Used</button>
+    <button onclick="setCondition('Refurbished',this)">Refurbished</button>
+  </div>
+
+  <div class="filters">
+    <button class="active" onclick="setType('All',this)">Retail & Wholesale</button>
+    <button onclick="setType('Retail',this)">Retail</button>
+    <button onclick="setType('Wholesale',this)">Wholesale</button>
+  </div>
+
+  <div class="product-grid" id="products"></div>
+</section>
+
+<section class="section">
+  <h2>Shop Across Uganda</h2>
+  <p class="sub">Find sellers and products by location.</p>
+
+  <div class="location-box">
+    <strong>Marketplace coverage:</strong><br>
+    Kampala • Wakiso • Entebbe • Mukono • Jinja • Mbale • Soroti •
+    Gulu • Lira • Arua • Mbarara • Masaka • Fort Portal • Hoima •
+    Kabale • Kasese • Iganga • Tororo • Moroto • Kotido and other
+    towns and districts across Uganda.
+    <br><br>
+    <strong>Location filters planned:</strong> District, town, seller location
+    and delivery availability.
+  </div>
+</section>
+
+<section class="section">
+  <h2>Sell on VENDLIO</h2>
+  <p class="sub">
+    Individuals, shops, wholesalers, manufacturers and registered companies
+    will be able to create their own stores and list products.
+  </p>
+  <a class="whatsapp" style="max-width:300px"
+     href="https://wa.me/256705434720?text=Hello%20VENDLIO%2C%20I%20want%20to%20sell%20on%20the%20marketplace.">
+     Ask About Selling on VENDLIO
+  </a>
+</section>
+
+<footer>
+  <div class="logo">VEN<span>DLIO</span></div>
+  Africa's Marketplace. Uganda's Starting Point.<br>
+  WhatsApp: +256 705 434 720<br>
+  <a href="https://wa.me/256705434720">Chat with VENDLIO</a>
+  <p>© 2026 VENDLIO. All rights reserved.</p>
+</footer>
+
+<script>
+const photo = id =>
+  `https://images.unsplash.com/${id}?auto=format&fit=crop&w=700&q=85`;
+
+const categories = [
+["Electronics","photo-1498049794561-7780e7231661"],
+["Mobile Phones","photo-1511707171634-5f897ff02aa9"],
+["Computers & Laptops","photo-1496181133206-80ce9b88a853"],
+["Fashion & Clothing","photo-1483985988355-763728e1935b"],
+["Shoes & Footwear","photo-1542291026-7eec264c27ff"],
+["Bags & Luggage","photo-1584917865442-de89df76afd3"],
+["Watches","photo-1523275335684-37898b6baf30"],
+["Home & Living","photo-1600210492486-724fe5c67fb0"],
+["Furniture","photo-1555041469-a586c61ea9bc"],
+["Kitchen & Dining","photo-1556911220-e15b29be8c8f"],
+["Food & Groceries","photo-1542838132-92c53300491e"],
+["Agriculture","photo-1500382017468-9049fed747ef"],
+["Farm Equipment","photo-1592982537447-7440770cbfc9"],
+["Livestock & Animals","photo-1500595046743-cd271d694d30"],
+["Construction Materials","photo-1504307651254-35680f356d"],
+["Tools & Hardware","photo-1581147036324-c1c89c2c8a9b"],
+["Industrial Equipment","photo-1581092160562-40aa08e78837"],
+["Automotive","photo-1492144534655-ae79c964c9d7"],
+["Motorcycles & Bicycles","photo-1558981806-ec527fa84c39"],
+["Vehicle Parts","photo-1486262715619-67b85e0b08d3"],
+["Beauty & Cosmetics","photo-1596462502278-27bfdc403348"],
+["Health & Wellness","photo-1576091160399-112ba8d25d1d"],
+["Baby & Kids","photo-1519689680058-324335c77eba"],
+["Toys & Games","photo-1558060370-d644479cb6f7"],
+["Sports & Fitness","photo-1461896836934-ffe607ba8211"],
+["Books & Education","photo-1503676260728-1c00da094a0b"],
+["Office Supplies","photo-1497366754035-f200968a6e72"],
+["Music & Instruments","photo-1511379938547-c1f69419868d"],
+["Property & Real Estate","photo-1560518883-ce09059eeffa"],
+["Professional Services","photo-1521737711867-e3b97375f902"],
+["Beauty Services","photo-1560066984-138dadb4c035"],
+["Other Products","photo-1490481651871-ab68de25d43d"]
+];
+
+const products = [
+{
+ name:"Smartphone",
+ category:"Mobile Phones",
+ condition:"Brand new",
+ type:"Retail",
+ location:"Kampala",
+ image:"photo-1511707171634-5f897ff02aa9"
+},
+{
+ name:"Laptop Computer",
+ category:"Computers & Laptops",
+ condition:"Like new",
+ type:"Retail",
+ location:"Entebbe",
+ image:"photo-1496181133206-80ce9b88a853"
+},
+{
+ name:"Fashion Shoes",
+ category:"Shoes & Footwear",
+ condition:"Brand new",
+ type:"Retail",
+ location:"Wakiso",
+ image:"photo-1542291026-7eec264c27ff"
+},
+{
+ name:"Ladies Handbag",
+ category:"Bags & Luggage",
+ condition:"Brand new",
+ type:"Retail",
+ location:"Kampala",
+ image:"photo-1584917865442-de89df76afd3"
+},
+{
+ name:"Modern Sofa",
+ category:"Furniture",
+ condition:"Gently used",
+ type:"Retail",
+ location:"Mukono",
+ image:"photo-1555041469-a586c61ea9bc"
+},
+{
+ name:"Fresh Groceries",
+ category:"Food & Groceries",
+ condition:"Brand new",
+ type:"Wholesale",
+ location:"Jinja",
+ image:"photo-1542838132-92c53300491e"
+},
+{
+ name:"Agricultural Produce",
+ category:"Agriculture",
+ condition:"Brand new",
+ type:"Wholesale",
+ location:"Mbarara",
+ image:"photo-1500382017468-9049fed747ef"
+},
+{
+ name:"Car",
+ category:"Automotive",
+ condition:"Used",
+ type:"Retail",
+ location:"Kampala",
+ image:"photo-1492144534655-ae79c964c9d7"
+},
+{
+ name:"Wrist Watch",
+ category:"Watches",
+ condition:"Brand new",
+ type:"Retail",
+ location:"Entebbe",
+ image:"photo-1523275335684-37898b6baf30"
+},
+{
+ name:"Cosmetics",
+ category:"Beauty & Cosmetics",
+ condition:"Brand new",
+ type:"Wholesale",
+ location:"Kampala",
+ image:"photo-1596462502278-27bfdc403348"
+},
+{
+ name:"Construction Equipment",
+ category:"Construction Materials",
+ condition:"Brand new",
+ type:"Wholesale",
+ location:"Gulu",
+ image:"photo-1504307651254-35680f356d"
+},
+{
+ name:"Sports Equipment",
+ category:"Sports & Fitness",
+ condition:"Brand new",
+ type:"Retail",
+ location:"Mbale",
+ image:"photo-1461896836934-ffe607ba8211"
+}
+];
+
+let selectedCondition="All";
+let selectedType="All";
+let selectedCategory="All";
+
+function showCategories(){
+ const box=document.getElementById("categories");
+ box.innerHTML=categories.map(([name,id])=>`
+   <div class="category" onclick="chooseCategory('${name}')">
+     <img src="${photo(id)}" alt="${name}" loading="lazy">
+     <div>${name}</div>
+   </div>
+ `).join("");
+}
+
+function chooseCategory(name){
+ selectedCategory=name;
+ document.getElementById("search").value="";
+ showProducts();
+ document.getElementById("products").scrollIntoView({behavior:"smooth"});
+}
+
+function setCondition(value,button){
+ selectedCondition=value;
+ document.querySelectorAll(".filters button").forEach(b=>{
+   if(["All","Brand new","Like new","Gently used","Used","Refurbished"].includes(b.textContent)){
+     b.classList.remove("active");
+   }
+ });
+ button.classList.add("active");
+ showProducts();
+}
+
+function setType(value,button){
+ selectedType=value;
+ const buttons=button.parentElement.querySelectorAll("button");
+ buttons.forEach(b=>b.classList.remove("active"));
+ button.classList.add("active");
+ showProducts();
+}
+
+function showProducts(){
+ const query=document.getElementById("search").value.toLowerCase();
+ const filtered=products.filter(p=>{
+   const matchesSearch=
+     p.name.toLowerCase().includes(query) ||
+     p.category.toLowerCase().includes(query) ||
+     p.location.toLowerCase().includes(query);
+
+   const matchesCondition=
+     selectedCondition==="All" || p.condition===selectedCondition;
+
+   const matchesType=
+     selectedType==="All" || p.type===selectedType;
+
+   const matchesCategory=
+     selectedCategory==="All" || p.category===selectedCategory;
+
+   return matchesSearch && matchesCondition && matchesType && matchesCategory;
+ });
+
+ const box=document.getElementById("products");
+
+ if(!filtered.length){
+   box.innerHTML='<div class="empty">No matching sample listings yet. Try another search or category.</div>';
+   return;
+ }
+
+ box.innerHTML=filtered.map(p=>`
+   <article class="product">
+     <img src="${photo(p.image)}" alt="${p.name}" loading="lazy">
+     <div class="product-info">
+       <span class="tag">${p.condition}</span>
+       <h3>${p.name}</h3>
+       <p>${p.category}</p>
+       <p>${p.type} listing</p>
+       <p>📍 ${p.location}, Uganda</p>
+       <a class="whatsapp"
+         href="https://wa.me/256705434720?text=${encodeURIComponent("Hello VENDLIO, I am interested in: "+p.name+". Please provide more information.")}">
+         Enquire on WhatsApp
+       </a>
+     </div>
+   </article>
+ `).join("");
+}
+
+showCategories();
+showProducts();
+</script>
+
+</body>
+</html>
