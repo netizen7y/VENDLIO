@@ -196,13 +196,12 @@ footer a{color:#80baff}
 <section class="section">
   <h2>Explore All Categories</h2>
   <p class="sub">Discover products and services from across Uganda.</p>
-
   <div class="category-grid" id="categories"></div>
 </section>
 
 <section class="section">
   <h2>Discover Products</h2>
-  <p class="sub">Browse sample listings. Sellers will be able to add their own products when registration is connected.</p>
+  <p class="sub">Browse sample listings. Seller uploads will be enabled when the backend is connected.</p>
 
   <div class="filters">
     <button class="active" onclick="setCondition('All',this)">All</button>
@@ -224,8 +223,7 @@ footer a{color:#80baff}
 
 <section class="section">
   <h2>Shop Across Uganda</h2>
-  <p class="sub">Find sellers and products by location.</p>
-
+  <p class="sub">Discover sellers and products from different locations.</p>
   <div class="location-box">
     <strong>Marketplace coverage:</strong><br>
     Kampala • Wakiso • Entebbe • Mukono • Jinja • Mbale • Soroti •
@@ -277,8 +275,10 @@ const categories = [
 ["Agriculture","photo-1500382017468-9049fed747ef"],
 ["Farm Equipment","photo-1592982537447-7440770cbfc9"],
 ["Livestock & Animals","photo-1500595046743-cd271d694d30"],
-["Construction Materials","photo-1504307651254-35680f356d"],
-["Tools & Hardware","photo-1581147036324-c1c89c2c8a9b"],
+
+["Construction Materials","photo-1541888946425-d81bb19240f5"],
+["Tools & Hardware","photo-1504148455328-c376907d081c"],
+
 ["Industrial Equipment","photo-1581092160562-40aa08e78837"],
 ["Automotive","photo-1492144534655-ae79c964c9d7"],
 ["Motorcycles & Bicycles","photo-1558981806-ec527fa84c39"],
@@ -384,7 +384,15 @@ const products = [
  condition:"Brand new",
  type:"Wholesale",
  location:"Gulu",
- image:"photo-1504307651254-35680f356d"
+ image:"photo-1541888946425-d81bb19240f5"
+},
+{
+ name:"Hand Tools",
+ category:"Tools & Hardware",
+ condition:"Brand new",
+ type:"Retail",
+ location:"Mbale",
+ image:"photo-1504148455328-c376907d081c"
 },
 {
  name:"Sports Equipment",
@@ -404,7 +412,8 @@ function showCategories(){
  const box=document.getElementById("categories");
  box.innerHTML=categories.map(([name,id])=>`
    <div class="category" onclick="chooseCategory('${name}')">
-     <img src="${photo(id)}" alt="${name}" loading="lazy">
+     <img src="${photo(id)}" alt="${name}" loading="lazy"
+       onerror="this.onerror=null;this.src='https://placehold.co/700x450/e8eef8/17243a?text='+encodeURIComponent('${name}')">
      <div>${name}</div>
    </div>
  `).join("");
@@ -419,10 +428,8 @@ function chooseCategory(name){
 
 function setCondition(value,button){
  selectedCondition=value;
- document.querySelectorAll(".filters button").forEach(b=>{
-   if(["All","Brand new","Like new","Gently used","Used","Refurbished"].includes(b.textContent)){
-     b.classList.remove("active");
-   }
+ button.parentElement.querySelectorAll("button").forEach(b=>{
+   b.classList.remove("active");
  });
  button.classList.add("active");
  showProducts();
@@ -430,14 +437,16 @@ function setCondition(value,button){
 
 function setType(value,button){
  selectedType=value;
- const buttons=button.parentElement.querySelectorAll("button");
- buttons.forEach(b=>b.classList.remove("active"));
+ button.parentElement.querySelectorAll("button").forEach(b=>{
+   b.classList.remove("active");
+ });
  button.classList.add("active");
  showProducts();
 }
 
 function showProducts(){
  const query=document.getElementById("search").value.toLowerCase();
+
  const filtered=products.filter(p=>{
    const matchesSearch=
      p.name.toLowerCase().includes(query) ||
@@ -465,7 +474,8 @@ function showProducts(){
 
  box.innerHTML=filtered.map(p=>`
    <article class="product">
-     <img src="${photo(p.image)}" alt="${p.name}" loading="lazy">
+     <img src="${photo(p.image)}" alt="${p.name}" loading="lazy"
+       onerror="this.onerror=null;this.src='https://placehold.co/700x450/e8eef8/17243a?text='+encodeURIComponent('${p.name}')">
      <div class="product-info">
        <span class="tag">${p.condition}</span>
        <h3>${p.name}</h3>
